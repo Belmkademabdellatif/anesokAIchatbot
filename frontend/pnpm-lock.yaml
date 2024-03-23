@@ -8,6 +8,9 @@ dependencies:
   '@clerk/nextjs':
     specifier: ^4.19.0
     version: 4.29.9(next@13.4.4)(react-dom@18.2.0)(react@18.2.0)
+  '@next/font':
+    specifier: ^14.1.4
+    version: 14.1.4(next@13.4.4)
   '@prisma/client':
     specifier: ^5.11.0
     version: 5.11.0(prisma@5.11.0)
@@ -56,6 +59,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.7
     version: 1.0.7(tailwindcss@3.4.1)
+  valibot:
+    specifier: ^0.30.0
+    version: 0.30.0
   zod:
     specifier: ^3.20.2
     version: 3.22.4
@@ -313,6 +319,14 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
+
+  /@next/font@14.1.4(next@13.4.4):
+    resolution: {integrity: sha512-a7CnpjEA3zXsKpCB7JX92mNiDYvjDImLfRjK+szi/q64vwbNrrs54up2xgFE1T4K1OE8GaI/eQ3zrZFWIbOJ1Q==}
+    peerDependencies:
+      next: '*'
+    dependencies:
+      next: 13.4.4(react-dom@18.2.0)(react@18.2.0)
+    dev: false
 
   /@next/swc-darwin-arm64@13.4.4:
     resolution: {integrity: sha512-xfjgXvp4KalNUKZMHmsFxr1Ug+aGmmO6NWP0uoh4G3WFqP/mJ1xxfww0gMOeMeSq/Jyr5k7DvoZ2Pv+XOITTtw==}
@@ -3606,6 +3620,10 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  /valibot@0.30.0:
+    resolution: {integrity: sha512-5POBdbSkM+3nvJ6ZlyQHsggisfRtyT4tVTo1EIIShs6qCdXJnyWU5TJ68vr8iTg5zpOLjXLRiBqNx+9zwZz/rA==}
+    dev: false
 
   /webcrypto-core@1.7.8:
     resolution: {integrity: sha512-eBR98r9nQXTqXt/yDRtInszPMjTaSAMJAFDg2AHsgrnczawT1asx9YNBX6k5p+MekbPF4+s/UJJrr88zsTqkSg==}

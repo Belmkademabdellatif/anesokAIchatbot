@@ -17,6 +17,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        almarai: ["var(--font-almarai)"],
+        tajawal: ["var(--font-tajawal)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -1,17 +1,9 @@
-import { SignIn } from "@clerk/nextjs";
+import SignInForm from "@anesok/components/auth/SignInForm";
 
 const SignInPage = () => (
-  <div style={styles}>
-    <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+  <div>
+    <SignInForm />
   </div>
 );
 
 export default SignInPage;
-
-const styles = {
-  width: "100vw",
-  height: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
