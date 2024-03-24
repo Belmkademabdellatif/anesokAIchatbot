@@ -15,6 +15,13 @@
       "when": 1711292802501,
       "tag": "0001_pretty_giant_girl",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1711297601172,
+      "tag": "0002_sudden_the_renegades",
+      "breakpoints": true
     }
   ]
 }

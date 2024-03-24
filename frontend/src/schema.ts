@@ -5,7 +5,7 @@ export const usersTable = pgTable("users", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").unique().notNull(),
-  password: text("password").notNull(),
+  imgUrl: text('image_url'),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -55,4 +55,3 @@ export const messageRelations = relations(messagesTable, ({ one, many }) => ({
 		references: [conversationsTable.id]
 	}),
 }))
-

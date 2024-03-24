@@ -1,4 +1,4 @@
-import {object,string,minLength,email,Output, custom} from 'valibot'
+import {object,string,minLength,email,Output, custom, maxLength} from 'valibot'
 
 export const signInSchema = object({
     email:string([email()]),
@@ -7,14 +7,9 @@ export const signInSchema = object({
 
 export const signUpSchema = object({
     ...signInSchema.entries,
-    confirmPassword:string([minLength(8)]),
-},
-[
-    custom(
-      ({ password, confirmPassword }) => password === confirmPassword,
-      'The passwords do not match.'
-    ),
-])
+    firstName:string([minLength(1),maxLength(20)]),
+    lastName:string([minLength(1),maxLength(20)]),
+})
 
 export type SignInParams = Output<typeof signInSchema>
 export type SignUpParams = Output<typeof signUpSchema>

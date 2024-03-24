@@ -8,7 +8,6 @@ import GoggleProvider, { type GoogleProfile } from 'next-auth/providers/google'
 import FacebookProvider, { type FacebookProfile } from 'next-auth/providers/facebook'
 import GithubProvider, { type GithubProfile } from 'next-auth/providers/github'
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { prisma } from "./db";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -54,7 +53,7 @@ export const authOptions: NextAuthOptions = {
       return {...session,...token}        
     },
   },
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(db),
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   providers: [
     GithubProvider({
