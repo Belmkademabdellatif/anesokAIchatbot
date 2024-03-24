@@ -1,4 +1,6 @@
-import SignInForm from "@anesok/components/auth/SignInForm";
+import dynamic from "next/dynamic";
+
+const SignInForm = dynamic(()=>import('@anesok/components/auth/SignInForm'))
 
 const SignInPage = () => (
   <div>

@@ -1,17 +1,11 @@
-import { SignUp } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
+
+const SignUpForm = dynamic(()=>import('@anesok/components/auth/SignUpForm'))
 
 const SignUpPage = () => (
-  <div style={styles}>
-    <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
+  <div>
+    <SignUpForm/>
   </div>
 );
 
 export default SignUpPage;
-
-const styles = {
-  width: "100vw",
-  height: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
