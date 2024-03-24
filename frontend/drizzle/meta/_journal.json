@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711290252517,
+      "tag": "0000_windy_alice",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1711292802501,
+      "tag": "0001_pretty_giant_girl",
+      "breakpoints": true
+    }
+  ]
+}

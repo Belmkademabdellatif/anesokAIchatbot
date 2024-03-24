@@ -7,7 +7,10 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "generate": "drizzle-kit generate:pg",
+    "push": "drizzle-kit push:pg",
+    "studio": "drizzle-kit studio --port 3000 --verbose"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.19.0",
@@ -22,10 +25,13 @@
     "@trpc/server": "^10.9.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "drizzle-orm": "^0.30.4",
     "input-otp": "^1.2.2",
     "lucide-react": "^0.363.0",
     "next": "13.4.4",
     "next-auth": "^4.24.7",
+    "pg": "^8.11.3",
+    "postgres": "^3.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "1.12.3",
@@ -42,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.4.7",
+    "drizzle-kit": "^0.20.14",
     "eslint": "^8.38.0",
     "eslint-config-next": "13.4.4",
     "postcss": "^8.4.28",
