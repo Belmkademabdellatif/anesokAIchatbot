@@ -11,7 +11,7 @@ import Loading from '../ui/loading'
 import VerifyEmailForm from './VerifyEmailForm'
 
 export default function SignUpForm() {
-  const [credentials,setCredentials] = useState<SignUpParams>({email:'',password:'',firstName:'',lastName:''})
+  const [credentials,setCredentials] = useState<SignUpParams>({email:'',password:'',confirmPassword:''})
   const [disable,setDisable] = useState(true)
   const [isLoading,setIsLoading] = useState(false)
   const [showVerification,setShowVerification] = useState(false)
@@ -23,9 +23,8 @@ export default function SignUpForm() {
       'مرحباً بك في روبرت الدردشة ','انيسُك  ','مساحتك الآمنة للعناية بالصحة النفسية ',
     ],
     emailPlaceholder:'بريدك الإلكتروني ...',
-    passwordPlaceholder:'كلمة المرور ... ',
-    firstNamePlaceholder:'الاسم الأول...',
-    lastNamePlaceholder:'الاسم الأخير...',
+    passwordPlaceholder:'كلمة المرور … ',
+    confirmPasswordPlaceholder:'تأكيد كلمة المرور …',
     signUp:'إنشاء حساب جديد',
     noAccont:'ليس لديك حساب؟  انشئ حساب جديد من هنا'
   }
@@ -48,8 +47,6 @@ export default function SignUpForm() {
         await signUp.create({
         emailAddress:credentials.email,
         password:credentials.password,
-        firstName:credentials.firstName,
-        lastName:credentials.lastName
         });
     
         // send the email.
@@ -73,8 +70,7 @@ export default function SignUpForm() {
         {TextContent.subTitle.map((content,index)=><span key={content} className={`text-xl sm:text-2xl font-almarai ${index==1 && 'text-primary'}`}>{content}</span>)}
         <Input value={credentials.email} onChange={(email)=>setCredentials(prevs=>({...prevs,email:email.target.value}))} placeholder={TextContent.emailPlaceholder}/>
         <Password value={credentials.password} onChange={(password)=>setCredentials(prevs=>({...prevs,password:password.target.value}))} placeholder={TextContent.passwordPlaceholder}/>
-        <Input value={credentials.firstName} onChange={(firstName)=>setCredentials(prevs=>({...prevs,firstName:firstName.target.value}))} placeholder={TextContent.firstNamePlaceholder}/>
-        <Input value={credentials.email} onChange={(lastName)=>setCredentials(prevs=>({...prevs,lastName:lastName.target.value}))} placeholder={TextContent.lastNamePlaceholder}/>
+        <Password value={credentials.confirmPassword} onChange={(password)=>setCredentials(prevs=>({...prevs,confirmPassword:password.target.value}))} placeholder={TextContent.confirmPasswordPlaceholder}/>
         <SignOutButton/>
         <Button onClick={handleSignIn} disabled={disable} className='w-full'>
           {isLoading ? <Loading withText={true}/>:TextContent.signUp}

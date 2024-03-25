@@ -8,7 +8,11 @@ export const usersTable = pgTable("users", {
   imgUrl: text('image_url'),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  relationShipStatus:text('relation_status'),
+  workingStatus:text('working_status'),
+  bestFriendShortIntro:text('friend_intro')
 });
+
 
 export const userRelations = relations(usersTable, ({ one, many }) => ({
 	conversationList: many(conversationsTable),

@@ -22,6 +22,13 @@
       "when": 1711297601172,
       "tag": "0002_sudden_the_renegades",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1711301002545,
+      "tag": "0003_clever_goliath",
+      "breakpoints": true
     }
   ]
 }

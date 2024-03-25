@@ -1,7 +1,7 @@
-import React from 'react'
+import dynamic from 'next/dynamic'
+
+const GettingStartForm = dynamic(()=>import('@anesok/components/gettingStart/GettingStartForm'))
 
 export default function index() {
-  return (
-    <div>index</div>
-  )
+  return <GettingStartForm/>
 }
