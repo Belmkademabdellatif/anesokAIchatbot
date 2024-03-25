@@ -74,4 +74,13 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .autofill-text:-webkit-autofill {
+    -webkit-text-fill-color: white;
+  }
+
+  .input {
+    @apply autofill-text; /* set text colour (white) */
+    @apply autofill:shadow-[inset_0_0_0px_1000px_#020617]; /* set 'background' colour (black)*/
+  }
 }

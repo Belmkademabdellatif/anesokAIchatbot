@@ -71,7 +71,7 @@ export default function SignUpForm() {
         <Input value={credentials.email} onChange={(email)=>setCredentials(prevs=>({...prevs,email:email.target.value}))} placeholder={TextContent.emailPlaceholder}/>
         <Password value={credentials.password} onChange={(password)=>setCredentials(prevs=>({...prevs,password:password.target.value}))} placeholder={TextContent.passwordPlaceholder}/>
         <Password value={credentials.confirmPassword} onChange={(password)=>setCredentials(prevs=>({...prevs,confirmPassword:password.target.value}))} placeholder={TextContent.confirmPasswordPlaceholder}/>
-        <SignOutButton/>
+        {/* <SignOutButton/> */}
         <Button onClick={handleSignIn} disabled={disable} className='w-full'>
           {isLoading ? <Loading withText={true}/>:TextContent.signUp}
           </Button>
