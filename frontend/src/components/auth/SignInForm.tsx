@@ -6,7 +6,7 @@ import { Button } from '@anesok/components/ui/button'
 import SSObutton from './SSObutton'
 import { SignInParams, signInSchema } from '@anesok/server/module/auth/auth.schema'
 import { Password } from '../ui/password'
-import { useSignIn } from "@clerk/nextjs";
+import { SignOutButton, useSignIn } from "@clerk/nextjs";
 import { parse } from 'valibot'
 import { useRouter } from 'next/router'
 import Loading from '../ui/loading'
@@ -83,6 +83,7 @@ export default function SignInForm() {
         <Button onClick={handleSignIn} disabled={disable} className='w-full'>
           {isLoading ? <Loading withText={true}/>:TextContent.signIn}
           </Button>
+         {/* <SignOutButton/> */}
           <div className='w-full flex justify-center'>
           <Link className='text-xs text-center font-tajawal underline text-blue-500' href={`/sign-up`}>{TextContent.noAccont}</Link>
           </div>

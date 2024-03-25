@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import { Button } from '@anesok/components/ui/button'
+import { SignOutButton } from '@clerk/nextjs'
 
 // todo 
 // onClick create new Chat and redirec to it
@@ -14,6 +15,7 @@ export default function ConversationList() {
         <Image width={40} height={58} src={`/icons/logo.svg`} alt='logo'/>
         <Button variant={'ghost'} className='text-[#DFC590]'>{ContentText.title}</Button>
         </div>
+        <SignOutButton/>
     </div>
   )
 }
