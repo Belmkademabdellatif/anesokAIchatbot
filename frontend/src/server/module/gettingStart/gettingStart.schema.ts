@@ -2,13 +2,14 @@ import { object, string, minLength, Output, maxLength, union, literal, email } f
 
 
 export const gettingStartSchema = object({
-    email:string([email()]),
+    id:string(),
     firstName:string([minLength(2),maxLength(20)]),
     lastName:string([minLength(2),maxLength(20)]),
-    relationShipStatus:union([literal('unmarried'), literal('married'),literal('divorced')]),
-    workingStatus:union([literal('employed'), literal('unemployed'),literal('student')]),
-    bestFriendShortIntro:string([maxLength(255)])
+    relationShipStatus:union([literal('اعزب'), literal('متزوج'),literal('مطلق')]),
+    workingStatus:union([literal('موظف'), literal('عاطل عن العمل'),literal('طالب')]),
+    bestFriendShortIntro:string([minLength(2),maxLength(255)])
 })
 
-
+export type RelationStatus = Output<typeof gettingStartSchema.entries.relationShipStatus>
+export type workingStatus = Output<typeof gettingStartSchema.entries.workingStatus>
 export type GettingStartParams = Output<typeof gettingStartSchema>

@@ -17,6 +17,7 @@ export interface ClerkWebhook {
         strategy:  string;
       }
     }[];
+    id:                              string
     first_name:                      null;
     has_image:                       boolean;
     image_url:                       string;
@@ -108,12 +109,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // 👉 If the type is "user.created" create a record in the users table
       if (webhook.type === 'user.created') {
         console.log({
-          name: `${webhook.data.first_name??''} ${webhook.data.last_name??''}`,
           email:webhook.data.email_addresses[0]?.email_address??'',
           imgUrl: webhook.data.image_url,
         })
         await db.insert(usersTable).values({
-          name: `${webhook.data.first_name} ${webhook.data.last_name}`,
+          id:webhook.data.id,
+          name:'',
           email:webhook.data.email_addresses[0]?.email_address??'',
           imgUrl: webhook.data.image_url,
         })

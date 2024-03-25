@@ -35,8 +35,7 @@ export default function VerifyEmailForm({email}:{email:string}) {
       }
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId })
-        // todo ...
-        push("/");
+        push("/getting-start");
       }
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));

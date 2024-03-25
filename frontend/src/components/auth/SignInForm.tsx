@@ -54,8 +54,7 @@ export default function SignInForm() {
         console.log(result);
         if(!setActive)return
         await setActive({ session: result.createdSessionId });
-        // todo...
-        push("/")
+        push("/getting-start")
       }else {
         /*Investigate why the sign-in hasn't completed */
         console.log(result);

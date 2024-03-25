@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { serial, text, timestamp, pgTable,integer, boolean } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey().notNull(),
   name: text("name").notNull(),
   email: text("email").unique().notNull(),
   imgUrl: text('image_url'),
@@ -21,7 +21,7 @@ export const userRelations = relations(usersTable, ({ one, many }) => ({
 
 export const conversationsTable = pgTable("conversations", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => usersTable.id).notNull(),
+  userId: text("user_id").references(() => usersTable.id).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -40,7 +40,7 @@ export const conversationRelations = relations(conversationsTable, ({ one, many 
 export const messagesTable = pgTable("messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversation_id").references(() => conversationsTable.id).notNull(),
-  userId: integer("user_id").references(() => usersTable.id),
+  userId: text("user_id").references(() => usersTable.id),
   content: text("content").notNull(),
   isAI:boolean("is_ai"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
