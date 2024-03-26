@@ -4,16 +4,19 @@ import { Button } from '../ui/button'
 
 // todo 
 // onClick create new Chat and redirec to it
-export default function MessageList() {
+export default function MessageList({
+  conversationId,
+  userId,
+}: {
+  conversationId: number;
+  userId: string;
+}) {
     const ContentText = {
         title:'دردشة جديدة',
     }
   return (
     <div className='w-full max-w-sm p-3'>
-        <div className='flex gap-x-2'>
-        <Image width={40} height={58} src={`/icons/logo.svg`} alt='logo'/>
-        <Button variant={'ghost'} className='text-[#DFC590]'>{ContentText.title}</Button>
-        </div>
+        <h1>{JSON.stringify(conversationId)+' '+userId}</h1>
     </div>
   )
 }

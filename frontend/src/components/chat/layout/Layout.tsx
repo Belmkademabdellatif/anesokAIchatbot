@@ -1,26 +1,28 @@
-import React, { ReactNode } from 'react'
-import Header from './components/Header'
-import ConversationList from './components/ConversationList'
-import MessageInput from './components/MessageInput'
-import { useAuth, useClerk } from '@clerk/clerk-react'
+import { ReactNode, memo } from "react";
+import Header from "./components/Header";
+import ConversationList from "./components/conversation/ConversationList";
+import MessageInput from "./components/MessageInput";
 
-export default function Layout({children}:{children:ReactNode}) {
-  const {user} = useClerk()
-  
+const Layout = ({
+  children,
+  conversationId,
+  userId,
+}: {
+  children: ReactNode;
+  conversationId: number;
+  userId: string;
+}) => {
   return (
-    <div className='flex w-full h-screen'>
-            <ConversationList/>
-            {/* conversation list */}
-            {/* message view */}
-            <div className='w-full bg-slate-900  h-screen max-h-svh'>
-                <Header/>
-                <div className='w-full h-[80%]'>
-                {children}
-                </div>
-                <MessageInput/>
-            <div>
-            </div>
-            </div>
+    <div className="flex h-screen w-full">
+      <ConversationList userId={userId} />
+      <div className="h-screen max-h-svh  w-full bg-slate-900">
+        <Header />
+        <div className="h-[80%] w-full">{children}</div>
+        <MessageInput userId={userId} conversationId={conversationId} />
+        <div></div>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default memo(Layout);

@@ -40,7 +40,7 @@ export const conversationRelations = relations(conversationsTable, ({ one, many 
 export const messagesTable = pgTable("messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversation_id").references(() => conversationsTable.id).notNull(),
-  userId: text("user_id").references(() => usersTable.id),
+  userId: text("user_id").references(() => usersTable.id).notNull(),
   content: text("content").notNull(),
   isAI:boolean("is_ai"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
