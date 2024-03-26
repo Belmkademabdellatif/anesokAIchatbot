@@ -59,7 +59,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Error occured -- no svix headers' })
   }
  
-  console.log('headers', req.headers, svix_id, svix_signature, svix_timestamp)
   // Get the body
   const body = (await buffer(req)).toString()
  
@@ -85,17 +84,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const eventType = evt.type;
  
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
-  console.log('Webhook body:', body)
 
 
     // 👉 Parse the incomign event body into a ClerkWebhook object
     const webhook = JSON.parse(body) as ClerkWebhook
+    console.log({webhook})
     try {
+
       
       // 👉 `webhook.type` is a string value that describes what kind of event we need to handle
 
       // 👉 If the type is "user.updated" the important values in the database will be updated in the users table
-      if (webhook.type === 'user.updated' && !!webhook.data.email_addresses.at(0)?.email_address) {
+      if (webhook.type === 'user.updated') {
         await db
           .update(usersTable)
           .set({
@@ -103,7 +103,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             email:webhook.data.email_addresses[0]?.email_address,
             imgUrl: webhook.data.image_url
           })
-          .where(eq(usersTable.email, webhook.data.email_addresses[0]?.email_address??''))
+          .where(eq(usersTable.id, webhook.data.id))
       }
 
       // 👉 If the type is "user.created" create a record in the users table
@@ -122,7 +122,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // 👉 If the type is "user.deleted", delete the user record and associated blocks
       if (webhook.type === 'user.deleted') {
-        await db.delete(usersTable).where(eq(usersTable.email, webhook.data.email_addresses[0]?.email_address??''))
+        await db.delete(usersTable).where(eq(usersTable.id, webhook.data.id))
       }
 
       return res.status(200).json({ message: 'Webhook received' });

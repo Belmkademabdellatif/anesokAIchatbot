@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@anesok/components/ui/dropdown-menu";
 import Loading from "../ui/loading";
-import { useUser } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 
 const workingStatusDropdown:workingStatus[] =[
@@ -48,9 +48,9 @@ export default function GettingStartForm() {
   });
   const [disbaled, setDisabled] = useState(true);
   const { mutate, isLoading } = api.gettingStart.gettingFirst.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess(data) {
       if(data.code==200){
-        push('/chat')
+        void push('/chat')
       }
     },
   });
@@ -106,7 +106,8 @@ export default function GettingStartForm() {
           }
           placeholder={TextContent.lastNamePlaceholder}
         />
-        <DropdownMenu>
+        {/* <SignOutButton/> */}
+        <DropdownMenu dir="rtl">
           <DropdownMenuTrigger className='w-full'>
             <Button className='w-full' variant={'outline'}>{form.relationShipStatus.length>0?form.relationShipStatus:TextContent.relationShipStatus}</Button>
           </DropdownMenuTrigger>
@@ -116,7 +117,7 @@ export default function GettingStartForm() {
             {relationShipDropdown.map(item=><DropdownMenuItem onClick={()=>setForm(prevs=>({...prevs,relationShipStatus:item}))} key={item}>{item}</DropdownMenuItem>)}
           </DropdownMenuContent>
         </DropdownMenu>
-        <DropdownMenu>
+        <DropdownMenu dir="rtl">
           <DropdownMenuTrigger className='w-full'>
             <Button className='w-full' variant={'outline'}>{form.workingStatus.length>0?form.workingStatus:TextContent.workingStatus}</Button>
           </DropdownMenuTrigger>

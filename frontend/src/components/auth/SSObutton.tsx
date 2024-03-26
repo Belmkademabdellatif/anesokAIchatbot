@@ -3,6 +3,7 @@ import React from "react"
 import { Button } from "../ui/button"
 import Image from "next/image"
 import { useSignIn } from "@clerk/nextjs"
+import { OAuthStrategy } from "@clerk/nextjs/dist/types/server"
 
 type ButtonAttributes = {
     sso:'google'|'facebook'|'tiktok'
@@ -20,11 +21,23 @@ const SSObutton = React.forwardRef<
   //     redirectUrlComplete: '/'
   //   });
 
+  const { signIn } = useSignIn();
+ 
+  const signInWith = () => {
+    if(!signIn)return
+    return signIn.authenticateWithRedirect({
+      strategy:`oauth_${sso}`,
+      redirectUrl: "/sso-callback",
+      continueSignUp:true,
+      redirectUrlComplete: "/getting-start",
+    });
+  };
+
 
   return<Button
     variant={'secondary'}
     ref={ref}
-    // onClick={signInWithGoogle}
+    onClick={()=>signInWith()}
     className={cn("w-fit h-fit flex flex-col p-2", className)}
     {...props}
   >

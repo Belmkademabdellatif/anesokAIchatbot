@@ -2,8 +2,11 @@ import React, { ReactNode } from 'react'
 import Header from './components/Header'
 import ConversationList from './components/ConversationList'
 import MessageInput from './components/MessageInput'
+import { useAuth, useClerk } from '@clerk/clerk-react'
 
 export default function Layout({children}:{children:ReactNode}) {
+  const {user} = useClerk()
+  
   return (
     <div className='flex w-full h-screen'>
             <ConversationList/>

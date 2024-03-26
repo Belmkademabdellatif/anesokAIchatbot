@@ -1,20 +1,28 @@
-import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse} from "next/server";
 
 export default authMiddleware({
   publicRoutes:["/sign-in","/sign-up","/", "/api/(.*)"],
+  debug:false,
   afterAuth(auth, req) {
     
     // Handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
-      return redirectToSignIn({ returnBackUrl: req.url });
+      const url = req.nextUrl.clone()
+      url.pathname = '/sign-in'    
+      return NextResponse.redirect(url)
     }
 
     // handle authenticated user away from /sign-in & /sign-up paths
-    if(auth.userId && (req.nextUrl.pathname.includes('sign-in') || req.nextUrl.pathname.includes('sign-up'))){
+    if(auth && auth.userId && !req.nextUrl.pathname.includes('getting-start') &&  (req.nextUrl.pathname.includes('sign-in') || req.nextUrl.pathname.includes('sign-up'))){
       const url = req.nextUrl.clone()
-      url.pathname = '/chat'    
+      url.pathname = '/getting-start'    
       return NextResponse.redirect(url);
+    }
+
+    // If the user is signed in and trying to access a protected route, allow them to access route
+    if (auth.userId && !auth.isPublicRoute) {
+      return NextResponse.next();
     }
 
     // Allow users visiting public routes to access them

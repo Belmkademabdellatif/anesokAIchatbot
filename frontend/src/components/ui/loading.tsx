@@ -3,9 +3,11 @@ import { cn } from "@anesok/utils/tailwindHelper";
 export default function Loading({
   className,
   withText = false,
+  customText
 }: {
   className?: string;
   withText?: boolean;
+  customText?:string
 }) {
   return (
     <div className="flex items-center justify-center gap-x-2">
@@ -28,7 +30,7 @@ export default function Loading({
           fill="currentFill"
         />
       </svg>
-      {withText && <h1 className="text-xs text-foreground">{'جاري التحميل...'}</h1>}
+      {withText && <h1 className="text-xs text-foreground">{customText?customText: 'جاري التحميل...'}</h1>}
     </div>
   );
 }

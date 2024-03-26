@@ -13,6 +13,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { userId } = getAuth(ctx.req);
   const user = await clerkClient.users.getUser(userId??'');
 
+  console.log(`from getting start ${user.firstName!=null&&user.firstName!=''}`)
   // if the user first name exist means he/she already did 
   //the getting start step , redirect the user to chat page
   if(user.firstName!=null&&user.firstName!=''){

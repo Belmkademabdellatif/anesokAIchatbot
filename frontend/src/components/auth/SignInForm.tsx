@@ -17,7 +17,7 @@ export default function SignInForm() {
   const [disable,setDisable] = useState(true)
   const [isLoading,setIsLoading] = useState(false)
   const { isLoaded, signIn, setActive } = useSignIn();
-  const {push} = useRouter()
+  const {push,replace} = useRouter()
 
   const TextContent = {
     title:'انيسُك',
@@ -54,7 +54,7 @@ export default function SignInForm() {
         console.log(result);
         if(!setActive)return
         await setActive({ session: result.createdSessionId });
-        push("/getting-start")
+        void replace("/getting-start")
       }else {
         /*Investigate why the sign-in hasn't completed */
         console.log(result);

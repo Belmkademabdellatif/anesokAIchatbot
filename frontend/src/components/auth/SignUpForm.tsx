@@ -9,6 +9,7 @@ import { SignOutButton, useSignUp } from "@clerk/nextjs";
 import { parse } from 'valibot'
 import Loading from '../ui/loading'
 import VerifyEmailForm from './VerifyEmailForm'
+import Link from 'next/link'
 
 export default function SignUpForm() {
   const [credentials,setCredentials] = useState<SignUpParams>({email:'',password:'',confirmPassword:''})
@@ -26,7 +27,7 @@ export default function SignUpForm() {
     passwordPlaceholder:'كلمة المرور … ',
     confirmPasswordPlaceholder:'تأكيد كلمة المرور …',
     signUp:'إنشاء حساب جديد',
-    noAccont:'ليس لديك حساب؟  انشئ حساب جديد من هنا'
+    hasAccountAlready:'لديك حساب بالفعل ؟ سجّل دخول من هنا'
   }
 
   useEffect(()=>{
@@ -75,6 +76,9 @@ export default function SignUpForm() {
         <Button onClick={handleSignIn} disabled={disable} className='w-full'>
           {isLoading ? <Loading withText={true}/>:TextContent.signUp}
           </Button>
+          <div className='w-full flex justify-center'>
+          <Link className='text-xs text-center font-tajawal underline text-blue-500' href={`/sign-in`}>{TextContent.hasAccountAlready}</Link>
+            </div>
       </div>}
       </div>
       <div className='hidden sm:flex items-center justify-center w-full h-screen bg-slate-800'>
