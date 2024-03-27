@@ -9,7 +9,7 @@
 # the total number of articles form alibiti are : 305
 # the total number of questions form alibiti are : 7932
 # the total number of terms form alibiti are : 792
-# 9500
+# ~= 9500
 
 # import asyncio
 import time

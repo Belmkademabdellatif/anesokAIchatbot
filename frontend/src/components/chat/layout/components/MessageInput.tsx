@@ -9,7 +9,7 @@ import { SendIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import { parse } from "valibot";
-import { usePendingMessageStore } from "zustandStore/PendingMessage";
+// import { usePendingMessageStore } from "zustandStore/PendingMessage";
 import { useConversationStore } from "zustandStore/conversationStore";
 import { useMessageStore } from "zustandStore/messageStore";
 // import { usePendingMessageStore } from "../../MessageList";
@@ -29,10 +29,10 @@ const MessageInput = ({
     content: "",
     isAI: false,
   });
-  const {pendingMessage,setPendingMessage,setToSend} = usePendingMessageStore()
+  // const {pendingMessage,setPendingMessage,setToSend} = usePendingMessageStore()
   const [disable, setDisable] = useState(true);
   const { push } = useRouter();
-  const {send} = useMessageStore()
+  const {send,setIsLoading,isLoading} = useMessageStore()
   const addMesage = useConversationStore(state=>state.addMessage)
 
   const { mutate: sendMessage, isLoading: isSendingMessage } =
@@ -41,7 +41,7 @@ const MessageInput = ({
           setMessage(prevs=>({...prevs,content:''}))
       },
       onSuccess(data) {
-        if(data.isAI)setPendingMessage('')
+        // if(data.isAI)setPendingMessage('')
         send(data,conversationId)
         addMesage(conversationId,data.content)
       },
@@ -71,33 +71,51 @@ const MessageInput = ({
 
 
 
-  const fetchData = async () => {
+  const fetchData = async (question:string) => {
 
-    console.log('hello from fetchData')
+    if(!question || question=='')return
+
     try {
-      const response = await fetch('http://localhost:3000/api/message');
-      if (!response.ok || !response.body) {
-        throw response.statusText;
-      }
+      setIsLoading(true)
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-          setToSend(true)
-          setTimeout(()=>{
-            setPendingMessage('');
-          },300)
-          break;
+      const response = await fetch('http://127.0.0.1:8000/generate',{
+        method:'POST',
+        body:JSON.stringify({question}),
+        headers:{
+          'Content-Type':'application/json'
         }
-        const decodedChunk = decoder.decode(value, { stream: true });
-        setPendingMessage(`${pendingMessage.content} ${decodedChunk}`);
-      }
+      });
+
+      const data = await response.json()
+
+      sendMessage({
+        userId,
+        conversationId:Number(conversationId),
+        content:data,
+        isAI:true
+      })
+
+      // const reader = response.body.getReader();
+      // const decoder = new TextDecoder();
+
+      // while (true) {
+      //   const { value, done } = await reader.read();
+      //   if (done) {
+      //     setToSend(true)
+      //     setTimeout(()=>{
+      //       setPendingMessage('');
+      //     },300)
+      //     break;
+      //   }
+      //   const decodedChunk = decoder.decode(value, { stream: true });
+      //   setPendingMessage(`${pendingMessage.content} ${decodedChunk}`);
+      // }
     } catch (error) {
+      console.log(error)
       // Handle other errors
     }
+
+    setIsLoading(false)
   };
  
   const handleClick = () =>{
@@ -105,7 +123,7 @@ const MessageInput = ({
       creatingConversation(message)
     }else{
       sendMessage(message);
-      fetchData()
+      fetchData(message.content)
     }
   }
 
@@ -114,7 +132,7 @@ const MessageInput = ({
     <div className="h-[10%] p-2 px-4">
       <div className="relative">
         <SendIcon
-          aria-disabled={disable || isSendingMessage || isCreatingConversation || message.content.length<2}
+          aria-disabled={disable || isSendingMessage || isCreatingConversation || message.content.length<2 || isLoading}
           onClick={handleClick}
           className="absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 hover:cursor-pointer hover:text-orange-300"
         />

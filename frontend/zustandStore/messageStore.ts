@@ -5,6 +5,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 type Message = GetOneMessage
 
 type MessageStore = {
+  isLoading:boolean,
+  setIsLoading:(isLoading:boolean)=>void
   conversationId:number,
   messageList:Message[] ;
   pendingMessage:Message|null,
@@ -19,6 +21,10 @@ type MessageStore = {
 export const useMessageStore = create<MessageStore>()(
   // persist(
     (set, get) => ({
+      isLoading:false,
+      setIsLoading(isLoading) {
+          set({isLoading})
+      },
         messageList: [],
         conversationId:-1,
         pendingMessage:null,

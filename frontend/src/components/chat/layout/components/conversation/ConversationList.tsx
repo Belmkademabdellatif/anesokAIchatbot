@@ -76,7 +76,7 @@ const ConversationList = ({ userId }: { userId: string }) => {
           conversationList.map((conversation,index) => (
             <ConversationCard key={index} {...conversation} />
           ))}
-        {conversationList.length == 0 && isEmpty && (
+        {conversationList.length == 0 && (
           <IllustrationContainer
             className="mt-20"
             description={ContentText.noConversationDesc}
