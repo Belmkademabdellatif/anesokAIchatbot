@@ -3,6 +3,13 @@ import Header from "./components/Header";
 import ConversationList from "./components/conversation/ConversationList";
 import MessageInput from "./components/MessageInput";
 
+export type User = {
+  id:string
+  name:string
+  emailAddress:string
+  image:string
+
+}
 const Layout = ({
   children,
   conversationId,
@@ -19,7 +26,6 @@ const Layout = ({
         <Header />
         <div className="h-[80%] w-full">{children}</div>
         <MessageInput userId={userId} conversationId={conversationId} />
-        <div></div>
       </div>
     </div>
   );

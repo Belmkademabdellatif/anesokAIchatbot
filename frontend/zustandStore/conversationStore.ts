@@ -11,6 +11,7 @@ type ConversationStore = {
   ) => void;
   extend:(conversationList:Conversation[])=>void
   getNewestConversationDate:()=> Date|undefined
+  addMessage:(conversationId:number,content:string)=>void
 };
 
 export const useConversationStore = create<ConversationStore>()(
@@ -33,6 +34,22 @@ export const useConversationStore = create<ConversationStore>()(
           return current.createdAt > newest.createdAt ? current : newest;
         });
         return new Date(newestConversation.createdAt);
+      },
+      addMessage(conversationId, content) {
+          get().conversationList.map(conversation=>{
+            if(conversation.id==conversationId && conversation.messageList.length==0){
+              let currentConversation = conversation
+              currentConversation.messageList.push({
+                userId: '',
+                createdAt: new Date(),
+                id: -1,
+                conversationId,
+                content,
+                isAI: false        
+              })
+            }
+            return conversation
+          })
       },
     }),
     {

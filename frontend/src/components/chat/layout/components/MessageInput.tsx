@@ -1,3 +1,4 @@
+"use client"
 import { Input } from "@anesok/components/ui/input";
 import {
   SendMessageParams,
@@ -6,37 +7,48 @@ import {
 import { api } from "@anesok/utils/api";
 import { SendIcon } from "lucide-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { parse } from "valibot";
+import { usePendingMessageStore } from "zustandStore/PendingMessage";
+import { useConversationStore } from "zustandStore/conversationStore";
+import { useMessageStore } from "zustandStore/messageStore";
+// import { usePendingMessageStore } from "../../MessageList";
 
 // todo
 // pass -1 for convesationId if there is not conversation exist
-export default function MessageInput({
+const MessageInput = ({
   userId,
   conversationId,
 }: {
   userId: string;
   conversationId: number;
-}) {
+}) =>{
   const [message, setMessage] = useState<SendMessageParams>({
     userId,
-    conversationId,
+    conversationId:Number(conversationId),
     content: "",
     isAI: false,
   });
+  const {pendingMessage,setPendingMessage,setToSend} = usePendingMessageStore()
   const [disable, setDisable] = useState(true);
   const { push } = useRouter();
+  const {send} = useMessageStore()
+  const addMesage = useConversationStore(state=>state.addMessage)
 
   const { mutate: sendMessage, isLoading: isSendingMessage } =
     api.message.send.useMutation({
-      onSuccess(data, variables, context) {
-        // todo add message to zustand store
+      onMutate() {
+          setMessage(prevs=>({...prevs,content:''}))
+      },
+      onSuccess(data) {
+        if(data.isAI)setPendingMessage('')
+        send(data,conversationId)
+        addMesage(conversationId,data.content)
       },
     });
 
   const {
     mutate: creatingConversation,
-    isLoading,
     isLoading: isCreatingConversation,
   } = api.conversation.create.useMutation({
     onSuccess(data) {
@@ -57,14 +69,52 @@ export default function MessageInput({
     }
   }, [message]);
 
-  const handleClick = () =>
-    conversationId == -1 ? creatingConversation(message) : sendMessage(message);
+
+
+  const fetchData = async () => {
+
+    console.log('hello from fetchData')
+    try {
+      const response = await fetch('http://localhost:3000/api/message');
+      if (!response.ok || !response.body) {
+        throw response.statusText;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+          setToSend(true)
+          setTimeout(()=>{
+            setPendingMessage('');
+          },300)
+          break;
+        }
+        const decodedChunk = decoder.decode(value, { stream: true });
+        setPendingMessage(`${pendingMessage.content} ${decodedChunk}`);
+      }
+    } catch (error) {
+      // Handle other errors
+    }
+  };
+ 
+  const handleClick = () =>{
+    if(conversationId == -1){
+      creatingConversation(message)
+    }else{
+      sendMessage(message);
+      fetchData()
+    }
+  }
+
 
   return (
     <div className="h-[10%] p-2 px-4">
       <div className="relative">
         <SendIcon
-          aria-disabled={disable || isSendingMessage || isCreatingConversation}
+          aria-disabled={disable || isSendingMessage || isCreatingConversation || message.content.length<2}
           onClick={handleClick}
           className="absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 hover:cursor-pointer hover:text-orange-300"
         />
@@ -79,3 +129,5 @@ export default function MessageInput({
     </div>
   );
 }
+
+export default memo(MessageInput)

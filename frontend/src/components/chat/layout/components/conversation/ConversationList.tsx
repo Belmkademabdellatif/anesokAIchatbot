@@ -63,9 +63,6 @@ const ConversationList = ({ userId }: { userId: string }) => {
         >
           {isLoading ? <Loading withText={true} /> : ContentText.title}
         </Button>
-        <button onClick={() => localStorage.removeItem("conversation-list")}>
-          reset
-        </button>
       </section>
       <section className="h-[88%] overflow-hidden overflow-y-auto">
         {conversationList.length == 0 && isLoading && (
@@ -76,8 +73,8 @@ const ConversationList = ({ userId }: { userId: string }) => {
           </div>
         )}
         {conversationList.length > 0 &&
-          conversationList.map((conversation) => (
-            <ConversationCard {...conversation} />
+          conversationList.map((conversation,index) => (
+            <ConversationCard key={index} {...conversation} />
           ))}
         {conversationList.length == 0 && isEmpty && (
           <IllustrationContainer
