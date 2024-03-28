@@ -107,6 +107,7 @@ def generate(state):
     Consider {friend_intro} as part of the user's social context.
     Use the given question and context to craft a concise and
     helpful response , the response should be in Arabic language, 
+    ensuring that the response is in markdown format.
     Keep your response kind to make the user more like to listen to you.
     Question: {question} 
     Context: {context} 

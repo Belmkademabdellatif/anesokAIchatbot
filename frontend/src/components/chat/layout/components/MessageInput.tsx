@@ -56,6 +56,8 @@ const MessageInput = ({
 
       // redirect to the new chat page
       push(`/chat/${data?.conversation.id}`);
+      const messageContent = data.conversation.messageList[0]?.content
+      if(!!messageContent)fetchData(messageContent,data.conversation.id)
     },
   });
 
@@ -73,13 +75,14 @@ const MessageInput = ({
     setMessage(prevs=>({...prevs,conversationId:Number(conversationId)}))
   },[conversationId])
 
-  const fetchData = async (question:string) => {
+  const fetchData = async (question:string,conversationId:number) => {
 
     if(!question || question=='')return
 
     try {
       setIsLoading(true)
 
+      setMessage(prevs=>({...prevs,content:''}))
 
       const body = JSON.stringify({
         question,
@@ -138,7 +141,7 @@ const MessageInput = ({
       creatingConversation(message)
     }else{
       sendMessage(message);
-      fetchData(message.content)
+      fetchData(message.content,Number(conversationId))
     }
   }
 
