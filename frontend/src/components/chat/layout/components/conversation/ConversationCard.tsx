@@ -4,10 +4,10 @@ import Link from 'next/link'
 import { useMessageStore } from 'zustandStore/messageStore'
 
 export default function ConversationCard({id,messageList}:GetOneUserConversationList['conversationList']['0']) {
-  // const reset = useMessageStore(state=>state.reset)
+  const setConversationId = useMessageStore(state=>state.setConversationId)
   return (
     <div>
-        <Button variant={'ghost'} className='w-full text-start'>
+        <Button variant={'ghost'} className='w-full text-start' onClick={()=>setConversationId(id)}>
         <Link href={`/chat/${id}`} className='text-xs line-clamp-1 w-full'>
             {messageList[0]?.content??'دردشة جديدة'}
         </Link>

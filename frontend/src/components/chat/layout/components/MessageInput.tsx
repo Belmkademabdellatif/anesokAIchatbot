@@ -12,28 +12,25 @@ import { parse } from "valibot";
 // import { usePendingMessageStore } from "zustandStore/PendingMessage";
 import { useConversationStore } from "zustandStore/conversationStore";
 import { useMessageStore } from "zustandStore/messageStore";
-// import { usePendingMessageStore } from "../../MessageList";
 
-// todo
-// pass -1 for convesationId if there is not conversation exist
 const MessageInput = ({
   userId,
-  conversationId,
 }: {
   userId: string;
   conversationId: number;
 }) =>{
+  // const {pendingMessage,setPendingMessage,setToSend} = usePendingMessageStore()
+  const [disable, setDisable] = useState(true);
+  const { push } = useRouter();
+  const {send,setIsLoading,isLoading,conversationId} = useMessageStore()
+  const addMesage = useConversationStore(state=>state.addMessage)
   const [message, setMessage] = useState<SendMessageParams>({
     userId,
     conversationId:Number(conversationId),
     content: "",
     isAI: false,
   });
-  // const {pendingMessage,setPendingMessage,setToSend} = usePendingMessageStore()
-  const [disable, setDisable] = useState(true);
-  const { push } = useRouter();
-  const {send,setIsLoading,isLoading} = useMessageStore()
-  const addMesage = useConversationStore(state=>state.addMessage)
+
 
   const { mutate: sendMessage, isLoading: isSendingMessage } =
     api.message.send.useMutation({

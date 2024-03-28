@@ -10,7 +10,7 @@ import ProfileDropdown from "../ProfileDropdown";
 import { useRouter } from "next/router";
 import { useConversationStore } from "zustandStore/conversationStore";
 
-const ConversationList = ({ userId }: { userId: string }) => {
+const ConversationList = ({ userId ,isSheet=false}: { userId: string,isSheet?:boolean }) => {
   const ContentText = {
     title: "دردشة جديدة",
     noConversationDesc: "سلام !  لم تقم ببدء أي محادثة بعد. ابدأ رحلتك الآن",
@@ -52,7 +52,7 @@ const ConversationList = ({ userId }: { userId: string }) => {
   }, [isSuccess, data, extend]);
 
   return (
-    <div className="w-full max-w-sm p-3">
+    <div className={`${isSheet ? 'block':'hidden sm:block'} w-full h-full max-w-sm p-3`}>
       <section className="flex h-[6%] gap-x-2">
         <Image width={40} height={58} src={`/icons/logo.svg`} alt="logo" />
         <Button

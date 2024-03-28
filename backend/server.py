@@ -1,10 +1,7 @@
 from fastapi import FastAPI
-from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from crag import app
 from pydantic import BaseModel
-from starlette.responses import StreamingResponse
-from async_generator import asynccontextmanager
 
 class TextRequest(BaseModel):
     question: str

@@ -8,6 +8,7 @@ type MessageStore = {
   isLoading:boolean,
   setIsLoading:(isLoading:boolean)=>void
   conversationId:number,
+  setConversationId:(conversationId:number)=>void
   messageList:Message[] ;
   pendingMessage:Message|null,
   setPendingMessage:(pendingMessage:Message|null)=>void
@@ -27,6 +28,9 @@ export const useMessageStore = create<MessageStore>()(
       },
         messageList: [],
         conversationId:-1,
+        setConversationId(conversationId) {
+            set({conversationId})
+        },
         pendingMessage:null,
       send(newMessage,conversationId) {
         if(get().conversationId!=conversationId){
