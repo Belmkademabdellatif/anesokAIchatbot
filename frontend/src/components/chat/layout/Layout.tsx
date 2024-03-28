@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import ConversationList from "./components/conversation/ConversationList";
 import MessageInput from "./components/MessageInput";
 import ConversationSheet from "./components/conversation/ConversationSheet";
+import { OneUser } from "@anesok/server/module/auth/auth.handler";
 
 export type User = {
   id:string
@@ -15,10 +16,12 @@ const Layout = ({
   children,
   conversationId,
   userId,
+  user
 }: {
   children: ReactNode;
   conversationId: number;
   userId: string;
+  user:OneUser
 }) => {
   return (
     <div className="flex h-screen w-full">
@@ -27,7 +30,7 @@ const Layout = ({
         <ConversationSheet userId={userId}/>
         <Header />
         <div className="h-[80%] w-full">{children}</div>
-        <MessageInput userId={userId} conversationId={conversationId} />
+        <MessageInput user={user} userId={userId} conversationId={conversationId} />
       </div>
     </div>
   );

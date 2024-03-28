@@ -11,6 +11,8 @@ from langchain.prompts import PromptTemplate
 from langchain.prompts import PromptTemplate
 from langchain.docstore.document import Document
 from google.generativeai.types.safety_types import HarmBlockThreshold, HarmCategory
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferMemory
 
 import os
 from dotenv import load_dotenv
@@ -66,10 +68,12 @@ def retrieve(state):
     state_dict = state["keys"]
     question = state_dict["question"]
     local = state_dict["local"]
+    session = state_dict['session']
+    
     documents = retriever.get_relevant_documents(question)
     print(documents)
     return {"keys": {"documents": documents, "local": local, 
-            "question": question}}
+            "question": question,"session":session}}
 
 def generate(state):
     """
@@ -86,6 +90,7 @@ def generate(state):
     state_dict = state["keys"]
     question = state_dict["question"]
     documents = state_dict["documents"]
+    session = state_dict['session']
 
     # Prompt
     prompt = PromptTemplate.from_template(
@@ -97,6 +102,9 @@ def generate(state):
     individuals seeking guidance and assistance with their emotional 
     well-being. Engage empathetically and offer constructive advice
     based on the context provided.
+    Your role is to provide supportive and insightful responses to
+    {name}, who is currently {working_status} and {relation_status}.
+    Consider {friend_intro} as part of the user's social context.
     Use the given question and context to craft a concise and
     helpful response , the response should be in Arabic language, 
     Keep your response kind to make the user more like to listen to you.
@@ -105,9 +113,8 @@ def generate(state):
     Answer:
     """
     )
-
-
     
+   
     llm = ChatGoogleGenerativeAI(model="gemini-pro",
                                 google_api_key=google_api_key,
                                 convert_system_message_to_human = True,
@@ -115,17 +122,51 @@ def generate(state):
                                 safety_settings=safety_settings
     )
     
-
+    
     # Chain
     rag_chain = prompt | llm | StrOutputParser()
 
+
+
+    # combined_template = """The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    # Current conversation:
+    # {history}
+    # Human: {input}
+    # AI Assistant:
+
+    # You are now operating as a therapy assistant. 
+    # Your role is to provide supportive and insightful responses to 
+    # individuals seeking guidance and assistance with their emotional 
+    # well-being. Engage empathetically and offer constructive advice
+    # based on the context provided.
+    # Use the given question and context to craft a concise and
+    # helpful response , the response should be in Arabic language, 
+    # Keep your response kind to make the user more like to listen to you.
+    # Question: {question} 
+    # Context: {context} 
+    # Answer:"""
+    
+    
+    # COMBINED_PROMPT = PromptTemplate(input_variables=["history", "input", "question", "context"], template=combined_template)
+
+
+    # conversation = ConversationChain(prompt=COMBINED_PROMPT,
+    #     llm=llm, verbose=True, memory=ConversationBufferMemory()
+    # )
+
+
     # Run
     generation = rag_chain.invoke({"context": documents, 
-                                  "question": question})
+                                  "question": question,
+                                  "name":session.username,
+                                  "working_status":session.workingStatus,
+                                  "relation_status":session.relationShipStatus,
+                                  "friend_intro":session.bestFriendShortIntro})
     
     return {
         "keys": {"documents": documents, "question": question, 
-                               "generation": generation}
+                               "generation": generation,"session":session}
     }
 
 def grade_documents(state):
@@ -144,6 +185,7 @@ def grade_documents(state):
     question = state_dict["question"]
     documents = state_dict["documents"]
     local = state_dict["local"]
+    session = state_dict['session']
 
     # LLM
     llm = ChatGoogleGenerativeAI(model="gemini-pro",
@@ -211,6 +253,7 @@ def grade_documents(state):
             "documents": filtered_docs,
             "question": question,
             "local": local,
+            "session":session,
             "run_web_search": search,
         }
     }
@@ -231,6 +274,8 @@ def transform_query(state):
     question = state_dict["question"]
     documents = state_dict["documents"]
     local = state_dict["local"]
+    session = state_dict['session']
+
 
     # Create a prompt template with format instructions and the query
     prompt = PromptTemplate(
@@ -262,7 +307,7 @@ def transform_query(state):
 
     return {
         "keys": {"documents": documents, "question": better_question, 
-        "local": local}
+        "local": local,"session":session}
     }
 
 def web_search(state):
@@ -281,6 +326,8 @@ def web_search(state):
     question = state_dict["question"]
     documents = state_dict["documents"]
     local = state_dict["local"]
+    session = state_dict['session']
+    
     try:
         tool = TavilySearchResults()
         docs = tool.invoke({"query": question})
@@ -291,7 +338,7 @@ def web_search(state):
         print(error)
 
     return {"keys": {"documents": documents, "local": local,
-    "question": question}}
+    "question": question,"session":session}}
 
 def decide_to_generate(state):
     """

@@ -1,10 +1,12 @@
 "use client"
 import { Input } from "@anesok/components/ui/input";
+import { OneUser } from "@anesok/server/module/auth/auth.handler";
 import {
   SendMessageParams,
   sendMessageSchema,
 } from "@anesok/server/module/message/message.schema";
 import { api } from "@anesok/utils/api";
+import { useClerk } from "@clerk/clerk-react";
 import { SendIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
@@ -14,9 +16,9 @@ import { useConversationStore } from "zustandStore/conversationStore";
 import { useMessageStore } from "zustandStore/messageStore";
 
 const MessageInput = ({
-  userId,
+  user
 }: {
-  userId: string;
+  user:OneUser
   conversationId: number;
 }) =>{
   // const {pendingMessage,setPendingMessage,setToSend} = usePendingMessageStore()
@@ -25,7 +27,7 @@ const MessageInput = ({
   const {send,setIsLoading,isLoading,conversationId} = useMessageStore()
   const addMesage = useConversationStore(state=>state.addMessage)
   const [message, setMessage] = useState<SendMessageParams>({
-    userId,
+    userId:user.id,
     conversationId:Number(conversationId),
     content: "",
     isAI: false,
@@ -67,6 +69,9 @@ const MessageInput = ({
   }, [message]);
 
 
+  useEffect(()=>{
+    setMessage(prevs=>({...prevs,conversationId:Number(conversationId)}))
+  },[conversationId])
 
   const fetchData = async (question:string) => {
 
@@ -75,9 +80,22 @@ const MessageInput = ({
     try {
       setIsLoading(true)
 
+
+      const body = JSON.stringify({
+        question,
+        session:{
+          username:user.name.split(' ')[0],
+          conversationID:Number(conversationId),
+          relationShipStatus:user.relationShipStatus??'',
+          workingStatus:user.workingStatus??'',
+          bestFriendShortIntro:user.bestFriendShortIntro??''      
+        }
+      })
+
+
       const response = await fetch('http://127.0.0.1:8000/generate',{
         method:'POST',
-        body:JSON.stringify({question}),
+        body,
         headers:{
           'Content-Type':'application/json'
         }
@@ -86,7 +104,7 @@ const MessageInput = ({
       const data = await response.json()
 
       sendMessage({
-        userId,
+        userId:user.id,
         conversationId:Number(conversationId),
         content:data,
         isAI:true
