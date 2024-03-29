@@ -1,21 +1,21 @@
 
-<h1 align="center">WFYB</h1>
-<p align="center">
-📔<a href="https://github.com/Faris-abukhader/WFYB-frontend/blob/master/README.md"> English </a>📔 
- </p>
+<h1 align="center">Anesok انيسُك</h1>
+
+<div align="center">
+ <img src="https://github.com/Faris-abukhader/anesokAIchatbot/assets/70070951/59ce8aae-086c-4af5-bf9c-a87a3a137dff" width="200" height="200" style="padding-right:15px"/>
+</div>
+                                                                                                                
+
+
 
 
 
 ## 🚩 قائمة المحتويات 
 
-
 - [المقدمة](#--المقدمة)
 - [النماذج والرسم البياني](#--النماذج-والرسم-البياني)
 - [تحميل المستودع](#--تحميل-المستودع)
 - [تهيئة المشروع](#--تهيئة-المشروع)
-- [بنية مجلد المشروع](#--بنية-مجلد-المشروع)
-- [الخصائص](#--الخصائص)
-- [المكتبات](#-المكتبات)
 - [الرخصة](#-الرخصة)
 
 ## <img src="https://cdn-icons-png.flaticon.com/512/1436/1436664.png" width="25" height="25" style="padding-right:15px">  المقدمة 
