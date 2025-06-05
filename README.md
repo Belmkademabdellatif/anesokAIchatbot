@@ -5,9 +5,6 @@
  <img src="https://github.com/Faris-abukhader/anesokAIchatbot/assets/70070951/59ce8aae-086c-4af5-bf9c-a87a3a137dff" width="200" height="200" style="padding-right:15px"/>
 </div>
                                                                                                                 
-<p align="center">
- <a  href="https://github.com/Faris-abukhader/anesokAIchatbot/blob/main/README_en.md"> 📔English📔</a>
-</p>
 
 
 
